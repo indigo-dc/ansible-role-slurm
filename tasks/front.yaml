@@ -6,7 +6,7 @@
     - lineinfile: dest={{ SLURM_CONF }} regexp='ControlMachine=' line='ControlMachine={{ansible_hostname}}'
     - lineinfile: dest={{ SLURM_CONF }} regexp='NodeName=' line='NodeName={{slurm_vnode_prefix}}[1-{{slurm_wn_ips|length}}] CPUs=1 State=UNKNOWN'
       when: "{{slurm_wn_ips|length}} > 0"
-    - lineinfile: dest={{ SLURM_CONF }} regexp='PartitionName=' line='PartitionName={{slurm_vnode_prefix}}[1-{{slurm_wn_ips|length}}] Default=YES MaxTime=INFINITE State=UP'
+    - lineinfile: dest={{ SLURM_CONF }} regexp='PartitionName=' line='PartitionName=default Nodes={{slurm_vnode_prefix}}[1-{{slurm_wn_ips|length}}] Default=YES MaxTime=INFINITE State=UP'
       when: "{{slurm_wn_ips|length}} > 0"
 
     # start SLURM slurmctld daemon
