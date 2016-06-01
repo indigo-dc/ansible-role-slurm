@@ -1,0 +1,11 @@
+---
+    #SLURM dependences 
+    - apt: name=slurm-llnl
+
+    - copy: dest=/etc/slurm-llnl/slurm.conf src=slurm.conf
+
+    - set_fact: SLURM_CONF="/etc/slurm-llnl/slurm.conf"
+
+
+
+

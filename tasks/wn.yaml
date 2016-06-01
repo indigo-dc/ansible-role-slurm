@@ -1,0 +1,19 @@
+---
+    # We have to remove the entries in /etc/hosts that correspond to the node name
+    - shell: cat /etc/hosts | sed "/{{slurm_server_name}}/d" > /tmp/newhosts  
+    # Now we add a new entry with the new IP address
+    - shell: echo "{{ slurm_server_ip }} {{ slurm_server_name }}" >> /tmp/newhosts 
+    # Let's set the new /etc/hosts file
+    - shell: cp /tmp/newhosts /etc/hosts && rm /tmp/newhosts 
+
+    - local_action: wait_for path=/etc/munge/munge.key
+    - include: sudo_copy.yaml src=/etc/munge/munge.key dest=/etc/munge/munge.key owner=munge group=munge mode="0400"
+    - service: name=munge state=restarted
+
+    - service: name=slurm-llnl state=started
+      when: ansible_os_family == "Debian"
+
+    - name: start SLURM slurmctld daemon in RedHat systems
+      command: systemctl start slurm 
+      when: ansible_os_family == "RedHat"
+
