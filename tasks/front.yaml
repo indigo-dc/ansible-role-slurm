@@ -13,8 +13,12 @@
     - service: name=slurm-llnl state=started
       when: ansible_os_family == "Debian"
 
+    - name: start SLURM daemon in RedHat systems
+      service: name=slurm state=started
+      when: ansible_os_family == "RedHat" and ansible_distribution_major_version == "6"
+
     - name: start SLURM slurmctld daemon in RedHat systems
       command: systemctl start slurm 
-      when: ansible_os_family == "RedHat"
+      when: ansible_os_family == "RedHat" and ansible_distribution_major_version == "7"
 
     - shell: scontrol reconfig
