@@ -15,6 +15,4 @@
 
     - include: "{{slurm_type_of_node}}.yaml"
 
-    # start SLURM daemon
-    - service: name={{SLURM_SERVICE}} state=started
 

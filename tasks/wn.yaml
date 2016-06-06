@@ -13,3 +13,6 @@
     - service: name=munge state=restarted
       when: not munge_key.stat.exists
 
+    # start SLURM daemon
+    - service: name={{SLURM_SERVICE}} state=started
+

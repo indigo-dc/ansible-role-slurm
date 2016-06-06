@@ -11,4 +11,7 @@
     - lineinfile: dest={{ SLURM_CONF }} regexp='PartitionName=' line='PartitionName=debug Nodes={{slurm_vnode_prefix}}[1-{{slurm_wn_ips|length}}] Default=YES MaxTime=INFINITE State=UP'
       when: "{{slurm_wn_ips|length}} > 0"
 
+    # start SLURM daemon
+    - service: name={{SLURM_SERVICE}} state=started
+
     - shell: scontrol reconfig
