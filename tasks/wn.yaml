@@ -7,13 +7,9 @@
     - shell: cp /tmp/newhosts /etc/hosts && rm /tmp/newhosts 
 
     - local_action: wait_for path=/etc/munge/munge.key
+      when: not munge_key.stat.exists
     - include: sudo_copy.yaml src=/etc/munge/munge.key dest=/etc/munge/munge.key owner=munge group=munge mode="0400"
+      when: not munge_key.stat.exists
     - service: name=munge state=restarted
-
-    - service: name=slurm-llnl state=started
-      when: ansible_os_family == "Debian"
-
-    - name: start SLURM slurmctld daemon in RedHat systems
-      command: systemctl start slurm 
-      when: ansible_os_family == "RedHat"
+      when: not munge_key.stat.exists
 

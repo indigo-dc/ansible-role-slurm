@@ -1,24 +1,14 @@
 ---
     # configure munge
     - shell: create-munge-key < /dev/null creates=/etc/munge/munge.key
+      when: not munge_key.stat.exists
     - service: name=munge state=restarted
+      when: not munge_key.stat.exists
 
     - lineinfile: dest={{ SLURM_CONF }} regexp='ControlMachine=' line='ControlMachine={{ansible_hostname}}'
     - lineinfile: dest={{ SLURM_CONF }} regexp='NodeName=' line='NodeName={{slurm_vnode_prefix}}[1-{{slurm_wn_ips|length}}] CPUs=1 State=UNKNOWN'
       when: "{{slurm_wn_ips|length}} > 0"
     - lineinfile: dest={{ SLURM_CONF }} regexp='PartitionName=' line='PartitionName=debug Nodes={{slurm_vnode_prefix}}[1-{{slurm_wn_ips|length}}] Default=YES MaxTime=INFINITE State=UP'
       when: "{{slurm_wn_ips|length}} > 0"
-
-    # start SLURM slurmctld daemon
-    - service: name=slurm-llnl state=started
-      when: ansible_os_family == "Debian"
-
-    - name: start SLURM daemon in RedHat systems
-      service: name=slurm state=started
-      when: ansible_os_family == "RedHat" and ansible_distribution_major_version == "6"
-
-    - name: start SLURM slurmctld daemon in RedHat systems
-      command: systemctl start slurm 
-      when: ansible_os_family == "RedHat" and ansible_distribution_major_version == "7"
 
     - shell: scontrol reconfig

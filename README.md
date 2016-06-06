@@ -28,11 +28,11 @@ This an example of how to install a Torque/PBS cluster:
 
     - hosts: server
       roles:
-      - { role: 'indigo-dc.slurm', slurm_type_of_node: 'front', slurm_server_ip: '{{ansible_default_ipv4}}', slurm_wn_ips: '{{ groups['wns']|map('extract', hostvars, 'ansible_default_ipv4')|list }}' }
+      - { role: 'indigo-dc.slurm', slurm_type_of_node: 'front', slurm_server_ip: '{{ansible_default_ipv4}}', slurm_wn_ips: "{{ groups['wns']|map('extract', hostvars, 'ansible_default_ipv4')|list }}" }
 
     - hosts: wns
       roles:
-      - { role: 'indigo-dc.slurm', slurm_type_of_node: 'wn', slurm_server_ip: '{{hostvars['server']['ansible_default_ipv4']}}' }
+      - { role: 'indigo-dc.slurm', slurm_type_of_node: 'wn', slurm_server_ip: "{{hostvars['server']['ansible_default_ipv4']}}" }
 
 License
 -------

@@ -1,10 +1,12 @@
 ---
     #SLURM dependences 
-    - apt: name=slurm-llnl
+    - name: Install Apr slurm package
+      apt: name=slurm-llnl
 
-    - copy: dest=/etc/slurm-llnl/slurm.conf src=slurm.conf
+    - name: Set the slurm.conf file
+      copy: dest=/etc/slurm-llnl/slurm.conf src=slurm.conf
 
-    - set_fact: SLURM_CONF="/etc/slurm-llnl/slurm.conf"
+    - set_fact: SLURM_CONF="/etc/slurm-llnl/slurm.conf" SLURM_SERVICE="slurm-llnl"
 
 
 
