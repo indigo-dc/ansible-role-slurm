@@ -15,6 +15,7 @@
     - service: name={{SLURM_SERVICE}} state=started
     
     - name: Ensure slurmd is not running in front node
-      command: pgrep slurmd && killall slurmd
+      shell: pgrep slurmd && killall slurmd
+      ignore_errors: yes
 
     - shell: scontrol reconfig
