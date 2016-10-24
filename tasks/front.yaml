@@ -2,8 +2,9 @@
     # configure munge
     - shell: create-munge-key < /dev/null creates=/etc/munge/munge.key
       when: not munge_key.stat.exists
-    - service: name=munge state=restarted
-      when: not munge_key.stat.exists
+      notify: restart munge
+
+    - service: name=munge state=started
 
     - name: Create the slurm.conf file
       template: dest={{ SLURM_CONF }} src=slurm.conf.j2
