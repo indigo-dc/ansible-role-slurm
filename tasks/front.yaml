@@ -7,10 +7,10 @@
 
     - name: Create the slurm.conf file
       template: dest={{ SLURM_CONF }} src=slurm.conf.j2
+      notify: restart slurm
 
     # start SLURM daemon
     - service: name={{SLURM_SERVICE}} state=started
-      notify: restart slurm
     
     - name: Ensure slurmd is not running in front node
       shell: pgrep slurmd && killall slurmd
