@@ -5,11 +5,8 @@
     - service: name=munge state=restarted
       when: not munge_key.stat.exists
 
-    - lineinfile: dest={{ SLURM_CONF }} regexp='ControlMachine=' line='ControlMachine={{ansible_hostname}}'
-    - lineinfile: dest={{ SLURM_CONF }} regexp='NodeName=' line='NodeName={{slurm_vnode_prefix}}[1-{{slurm_wn_ips|length}}] CPUs=1 State=UNKNOWN'
-      when: "{{slurm_wn_ips|length}} > 0"
-    - lineinfile: dest={{ SLURM_CONF }} regexp='PartitionName=' line='PartitionName=debug Nodes={{slurm_vnode_prefix}}[1-{{slurm_wn_ips|length}}] Default=YES MaxTime=INFINITE State=UP'
-      when: "{{slurm_wn_ips|length}} > 0"
+    - name: Create the slurm.conf file
+      template: dest={{ SLURM_CONF }} src=slurm.conf.j2
 
     # start SLURM daemon
     - service: name={{SLURM_SERVICE}} state=started

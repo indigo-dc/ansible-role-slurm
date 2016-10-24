@@ -12,9 +12,6 @@
     - name: install rpm slurm package
       command: rpm -Uvh ~/rpmbuild/RPMS/x86_64/*.rpm chdir=/tmp creates=/etc/init.d/slurm
 
-    - name: Set the slurm.conf file
-      copy: dest=/etc/slurm/slurm.conf src=slurm.conf
-
     - set_fact: SLURM_CONF="/etc/slurm/slurm.conf"  SLURM_SERVICE="slurm"
   
     - name: create slurm user and group

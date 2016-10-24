@@ -2,7 +2,7 @@
 # Put this file on all nodes of your cluster.
 # See the slurm.conf man page for more information.
 #
-ControlMachine=slurmserver
+ControlMachine={{slurm_server_name}}
 #ControlAddr=
 #BackupController=
 #BackupAddr=
@@ -47,7 +47,7 @@ ReturnToService=1
 #SallocDefaultCommand= 
 SlurmctldPidFile=/var/run/slurmctld.pid
 SlurmctldPort=6817
-SlurmdPidFile=/var/run/slurmd.pid
+SlurmdPidFile=/var/run/slurmctld.pid
 SlurmdPort=6818
 SlurmdSpoolDir=/tmp/slurmd
 SlurmUser=slurm
@@ -156,5 +156,10 @@ SlurmdLogFile=/tmp/slurmd.log
 # 
 # 
 # COMPUTE NODES 
+{% if {{slurm_wn_ips|length}} > 0 %}
+NodeName={{slurm_vnode_prefix}}[1-{{slurm_wn_ips|length}}] CPUs=1 State=UNKNOWN
+PartitionName=debug Nodes={{slurm_vnode_prefix}}[1-{{slurm_wn_ips|length}}] Default=YES MaxTime=INFINITE State=UP
+{% else %}
 NodeName=localhost CPUs=1 State=UNKNOWN 
 PartitionName=debug Nodes=localhost Default=YES MaxTime=INFINITE State=UP
+{% endif %}

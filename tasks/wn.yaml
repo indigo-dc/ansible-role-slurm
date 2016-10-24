@@ -13,11 +13,8 @@
     - service: name=munge state=restarted
       when: not munge_key.stat.exists
 
-    - lineinfile: dest={{ SLURM_CONF }} regexp='ControlMachine=' line='ControlMachine={{slurm_server_name}}'
-
-    # A patch to solve some strange issue in CentOS 7
-    - lineinfile: dest={{ SLURM_CONF }} regexp='^SlurmdPidFile=' line='SlurmdPidFile=/var/run/slurmctld.pid'
-      when: ansible_os_family == "RedHat" and ansible_distribution_major_version|int >= 7
+    - name: Create the slurm.conf file
+      template: dest={{ SLURM_CONF }} src=slurm.conf.j2
 
     # start SLURM daemon
     - service: name={{SLURM_SERVICE}} state=started
