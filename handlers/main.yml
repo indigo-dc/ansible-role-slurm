@@ -5,3 +5,6 @@
 - name: restart slurm
   service: name=slurm state=restarted
 
+- name: restart slurm-llnl
+  service: name=slurm-llnl state=restarted
+
