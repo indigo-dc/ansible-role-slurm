@@ -2,9 +2,5 @@
   service: name=munge state=restarted
   when: not munge_key.stat.exists
 
-- name: restart slurm
-  service: name=slurm state=restarted
-
-- name: restart slurm-llnl
-  service: name=slurm-llnl state=restarted
-
+- name: reload slurm
+  command: scontrol reconfigure
