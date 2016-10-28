@@ -10,7 +10,7 @@
       when: ansible_os_family == "RedHat" and ansible_distribution_major_version|int >= 7
       ignore_errors: yes
 
-    - local_action: wait_for path=/etc/munge/munge.key
+    - local_action: wait_for path=/etc/munge/munge.key timeout=600
       when: not munge_key.stat.exists
     - include: sudo_copy.yaml src=/etc/munge/munge.key dest=/etc/munge/munge.key owner=munge group=munge mode="0400"
       when: not munge_key.stat.exists
