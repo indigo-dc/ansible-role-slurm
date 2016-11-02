@@ -20,6 +20,10 @@ The variables that can be passed to this role and a brief description about them
 	slurm_vnode_prefix: vnode-
 	# List of IPs of the WNs
 	slurm_wn_ips: []
+	# List of the name of the WNs
+	slurm_wn_nodenames: []
+	# Number of CPUs of the WNs
+	slurm_wn_cpus: 1
 
 Example Playbook
 ----------------
@@ -28,7 +32,7 @@ This an example of how to install a Torque/PBS cluster:
 
     - hosts: server
       roles:
-      - { role: 'indigo-dc.slurm', slurm_type_of_node: 'front', slurm_server_ip: '{{ansible_default_ipv4}}', slurm_wn_ips: "{{ groups['wns']|map('extract', hostvars, 'ansible_default_ipv4')|list }}" }
+      - { role: 'indigo-dc.slurm', slurm_type_of_node: 'front', slurm_server_ip: '{{ansible_default_ipv4}}', slurm_wn_nodenames: "{{ groups['wns']|map('extract', hostvars, 'ansible_hostname')|list }}" }
 
     - hosts: wns
       roles:

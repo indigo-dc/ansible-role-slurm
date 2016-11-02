@@ -11,5 +11,7 @@ slurm_server_ip: 127.0.0.1
 slurm_vnode_prefix: vnode-
 # List of IPs of the WNs
 slurm_wn_ips: []
-
-
+# List of the name of the WNs
+slurm_wn_nodenames: []
+# Number of CPUs of the WNs
+slurm_wn_cpus: 1
