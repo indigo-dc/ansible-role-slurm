@@ -1,7 +1,7 @@
 ---
     #SLURM dependences 
     - name: update repositories cache and yum install slurm dependences in REL systems
-      yum: name=readline-devel,openssl,openssl-devel,munge-devel,pam-devel,perl-ExtUtils-MakeMaker,gcc,make,rpm-build,perl-DBI,perl-Switch,psmisc
+      yum: name=readline-devel,openssl,openssl-devel,munge-devel,pam-devel,perl-ExtUtils-MakeMaker,gcc,make,rpm-build,perl-DBI,psmisc
 
     - name: download SLURM package
       get_url: url=http://www.schedmd.com/download/archive/slurm-{{ slurm_version }}.tar.bz2 dest=/tmp/slurm-{{ slurm_version }}.tar.bz2
