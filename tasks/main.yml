@@ -11,6 +11,9 @@
     - stat: path=/etc/munge/munge.key
       register: munge_key
 
+    - name: Set the ip of the slurmserver
+      lineinfile: dest=/etc/hosts regexp="{{slurm_server_name}}" line="{{slurm_server_ip}} {{slurm_server_name}}.localdomain {{slurm_server_name}}"
+
     - include: "{{ansible_os_family}}.yaml"
 
     - include: "{{slurm_type_of_node}}.yaml"
