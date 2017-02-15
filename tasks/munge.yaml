@@ -3,6 +3,26 @@
     - name: Apt install munge
       apt: name=munge update_cache=yes cache_valid_time=3600
       when: ansible_os_family == "Debian"
+      ignore_errors: yes
+      register: munge_install_result
+
+    # Fix to problem in ubuntu 16 with slurm pkg
+    - block:
+        - name: Create Munge key
+          shell: create-munge-key < /dev/null creates=/etc/munge/munge.key
+
+        - name: Set correct permissions to munge.key
+          file: path=/etc/munge/munge.key owner=munge group=munge mode=0400
+
+        - name: Set correct permissions to munge log
+          file: path=/var/log/munge mode=0700
+
+        - name: Set correct permissions to log
+          file: path=/var/log mode=0755
+
+        - name: Apt install munge (again)
+          apt: name=munge
+      when: munge_install_result|failed
 
     - name: Yum install epel
       yum: name=epel-release
