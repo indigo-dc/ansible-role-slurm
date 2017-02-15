@@ -3,6 +3,10 @@
     - name: update repositories cache and yum install slurm dependences in REL systems
       yum: name=readline-devel,openssl,openssl-devel,munge-devel,pam-devel,perl-ExtUtils-MakeMaker,gcc,make,rpm-build,perl-DBI,psmisc
 
+    - name: Install perl-Switch in CentOS 7
+      yum: name=perl-Switch
+      when: ansible_distribution_major_version == "7"
+
     - name: download SLURM package
       get_url: url=http://www.schedmd.com/download/archive/slurm-{{ slurm_version }}.tar.bz2 dest=/tmp/slurm-{{ slurm_version }}.tar.bz2
 
