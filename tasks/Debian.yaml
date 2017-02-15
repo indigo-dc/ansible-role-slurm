@@ -6,8 +6,8 @@
     - set_fact: SLURM_CONF="/etc/slurm-llnl/slurm.conf" SLURM_SERVICE="slurm-llnl"
 
     - set_fact: SLURM_SERVICE="slurmd"
-      when: ansible_distribution == "Ubuntu" and ansible_distribution_major_version == "16" and slurm_type_of_node = "wn"
+      when: ansible_distribution == "Ubuntu" and ansible_distribution_major_version == "16" and slurm_type_of_node == "wn"
 
     - set_fact: SLURM_SERVICE="slurmctld"
-      when: ansible_distribution == "Ubuntu" and ansible_distribution_major_version == "16" and slurm_type_of_node = "front"
+      when: ansible_distribution == "Ubuntu" and ansible_distribution_major_version == "16" and slurm_type_of_node == "front"
 
