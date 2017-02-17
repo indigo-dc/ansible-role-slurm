@@ -4,6 +4,9 @@
       when: not munge_key.stat.exists
       notify: restart munge
 
+    - name: Set correct permissions to munge.key
+      file: path=/etc/munge/munge.key owner=munge group=munge mode=0400
+
     - service: name=munge state=started
 
     - name: Create the slurm.conf file
