@@ -22,6 +22,9 @@
 
         - name: Apt install munge (again)
           apt: name=munge
+
+        - name: Remove the key
+          file: path=/etc/munge/munge.key state=absent
       when: munge_install_result|failed
 
     - name: Yum install epel
