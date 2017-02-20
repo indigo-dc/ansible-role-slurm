@@ -14,7 +14,9 @@
       when: not munge_key.stat.exists
     - include: sudo_copy.yaml src=/etc/munge/munge.key dest=/etc/munge/munge.key owner=munge group=munge mode="0400"
       when: not munge_key.stat.exists
-      notify: restart munge
+      
+    - service: name=munge state=restarted
+      when: not munge_key.stat.exists
 
     - service: name=munge state=started
 
