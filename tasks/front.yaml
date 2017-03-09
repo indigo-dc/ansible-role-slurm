@@ -3,6 +3,9 @@
       template: dest={{ SLURM_CONF }} src=slurm.conf.j2
       notify: reload slurm
 
+    - hostname:
+        name: slurmserver
+
     # start SLURM daemon
     - service: name={{SLURM_SERVICE}} state=started
     
