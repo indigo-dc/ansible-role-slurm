@@ -13,17 +13,20 @@ env:
     init: /usr/lib/systemd/systemd
     run_opts: "--privileged --volume=/sys/fs/cgroup:/sys/fs/cgroup:ro"
     exec_opts: "--tty"
+    dbus_up: "true"
     dbus: "true"
   - distro: ubuntu1404
     init: /sbin/init
     run_opts: "--privileged"
     exec_opts: ""
+    dbus_up: "true"
     dbus: "true"
   - distro: ubuntu1604
     init: /lib/systemd/systemd
     run_opts: "--privileged --volume=/sys/fs/cgroup:/sys/fs/cgroup:ro"
     exec_opts: ""
-    dbus: "'apt update && apt install -y dbus'"
+    dbus_up: "'apt update'"
+    dbus: "'apt install -y dbus'"
 
 before_install:
   # Pull container.
@@ -41,6 +44,7 @@ script:
   - 'docker exec --tty "$(cat ${container_id})" env TERM=xterm ansible-playbook /etc/ansible/roles/role_under_test/tests/test.yml --syntax-check'
 
   # Test role installation.
+  - 'docker exec ${exec_opts} "$(cat ${container_id})" ${dbus_up}'
   - 'docker exec ${exec_opts} "$(cat ${container_id})" ${dbus}'
   - 'docker exec ${exec_opts} "$(cat ${container_id})" hostname slurmserver'
   - 'docker exec ${exec_opts} "$(cat ${container_id})" ansible-playbook /etc/ansible/roles/role_under_test/tests/test.yml -e "slurm_type_of_node=front max_number_of_nodes=1"'
