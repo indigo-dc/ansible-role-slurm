@@ -23,7 +23,7 @@ env:
     init: /lib/systemd/systemd
     run_opts: "--privileged --volume=/sys/fs/cgroup:/sys/fs/cgroup:ro"
     exec_opts: ""
-    dbus: "apt install -y dbus"
+    dbus: "'apt install -y dbus'"
 
 before_install:
   # Pull container.
