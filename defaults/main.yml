@@ -15,3 +15,5 @@ slurm_wn_ips: []
 slurm_wn_nodenames: []
 # Number of CPUs of the WNs
 slurm_wn_cpus: 1
+# Password used to derive a munge key for authentication between the server and the workers
+slurm_password: hfe1q4ujaucsu913

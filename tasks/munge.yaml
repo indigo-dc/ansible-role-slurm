@@ -35,4 +35,10 @@
           file: path=/etc/munge/munge.key state=absent
       when: munge_install_result|failed
 
+    - shell: echo -n "{{ slurm_password }}" | sha512sum | cut -d' ' -f1 >/etc/munge/munge.key
+      when: not munge_key.stat.exists
 
+    - name: Set correct permissions to munge.key
+      file: path=/etc/munge/munge.key owner=munge group=munge mode=0400
+
+    - service: name=munge state=restarted
