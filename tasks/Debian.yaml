@@ -9,7 +9,7 @@
 - name: '[Ubuntu]install slurm dependences in Deb systems'
   apt: name=libmunge2,libpq5,openssl-blacklist,munge,libmunge-dev,gcc,make,bzip2 update_cache=yes cache_valid_time=3600
 
-- name: '[Ubuntu]Copy required packages'
+- name: '[Ubuntu] Copy required packages'
   copy: src={{PKG_FOLDER}}/{{item}} dest=/tmp/slurm.tar.bz2
   with_items:
     - slurm-{{slurm_version}}.tar.bz2
@@ -18,7 +18,7 @@
   command: tar xjf slurm.tar.bz2 chdir=/tmp creates=/tmp/slurm-{{ slurm_version }}
 
 - name: '[Ubuntu] configure SLURM'
-  command: ./configure {{ "--with-blcr=/usr/local/bin" if "blcr" in templates else "" }} chdir=/tmp/slurm-{{ slurm_version }} creates=/tmp/slurm-{{ slurm_version }}/config.log
+  command: ./configure chdir=/tmp/slurm-{{ slurm_version }} creates=/tmp/slurm-{{ slurm_version }}/config.log
 
 - name: '[Ubuntu] compile (make) SLURM'
   command: make chdir=/tmp/slurm-{{ slurm_version }} creates=/tmp/slurm-{{ slurm_version }}/src/slurmctld
@@ -30,7 +30,7 @@
     SLURM_CONF: "/usr/local/etc/slurm.conf"
 
 - set_fact: SLURM_SERVICE="slurmd"
-  when: ansible_distribution == "Ubuntu" and ansible_distribution_major_version == "16" and slurm_type_of_node == "wn"
+  when: ansible_distribution == "Ubuntu" and slurm_type_of_node == "wn"
 
 - set_fact: SLURM_SERVICE="slurmctld"
-  when: ansible_distribution == "Ubuntu" and ansible_distribution_major_version == "16" and slurm_type_of_node == "front"
+  when: ansible_distribution == "Ubuntu" and slurm_type_of_node == "front"
