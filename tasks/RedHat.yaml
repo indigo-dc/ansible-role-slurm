@@ -53,8 +53,9 @@
       - "/tmp/slurm-torque-{{SLURM_VERSION}}.x86_64.rpm"
   state: present
 
-
-- set_fact: SLURM_CONF="/etc/slurm/slurm.conf"  SLURM_SERVICE="slurm"
+- set_fact:
+    SLURM_CONF: "/etc/slurm/slurm.conf"
+    SLURM_SERVICE: "slurm"
   
 - name: '[EL] create slurm user and group'
   user: name=slurm shell=/bin/bash system=yes
