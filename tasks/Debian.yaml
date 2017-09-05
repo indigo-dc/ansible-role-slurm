@@ -7,7 +7,7 @@
   when: ansible_os_family == "Debian"
     
 - name: '[Ubuntu]install slurm dependences in Deb systems'
-    apt: name=libmunge2,libpq5,openssl-blacklist,munge,libmunge-dev,gcc,make,bzip2 update_cache=yes cache_valid_time=3600
+  apt: name=libmunge2,libpq5,openssl-blacklist,munge,libmunge-dev,gcc,make,bzip2 update_cache=yes cache_valid_time=3600
 
 - name: '[Ubuntu]Copy required packages'
   copy: src={{PKG_FOLDER}}/{{item}} dest=/tmp/slurm.tar.bz2
