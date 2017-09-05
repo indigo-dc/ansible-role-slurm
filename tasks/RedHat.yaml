@@ -10,6 +10,12 @@
   yum: name=perl-Switch
   when: ansible_distribution_major_version == "7"
 
+- name: '[EL] Set Centos 6 facts'
+  set_fact:
+    SLURM_VERSION: "{{ slurm_version }}-1.el6"
+    PKG_FOLDER: "centos6/{{ slurm_version }}"
+  when: ansible_os_family == "RedHat" and ansible_distribution_major_version|int == 6
+
 - name: '[EL] Set Centos 7 facts'
   set_fact:
     SLURM_VERSION: "{{ slurm_version }}-1.el7.centos"
@@ -51,7 +57,7 @@
       - "/tmp/slurm-slurmdbd-{{SLURM_VERSION}}.x86_64.rpm"
       - "/tmp/slurm-sql-{{SLURM_VERSION}}.x86_64.rpm"
       - "/tmp/slurm-torque-{{SLURM_VERSION}}.x86_64.rpm"
-  state: present
+    state: present
 
 - set_fact:
     SLURM_CONF: "/etc/slurm/slurm.conf"
