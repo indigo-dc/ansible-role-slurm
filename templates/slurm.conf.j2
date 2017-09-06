@@ -45,15 +45,8 @@ ProctrackType=proctrack/pgid
 #PropagateResourceLimitsExcept= 
 ReturnToService=1
 #SallocDefaultCommand= 
-
-{% if ansible_distribution == "Ubuntu" and ansible_distribution_major_version == "16" %}
-SlurmctldPidFile=/var/run/slurm-llnl/slurmctld.pid
-SlurmdPidFile=/var/run/slurm-llnl/slurmd.pid
-{% else %}
 SlurmctldPidFile=/var/run/slurmctld.pid
 SlurmdPidFile=/var/run/slurmctld.pid
-{% endif %}
-
 SlurmctldPort=6817
 SlurmdPort=6818
 SlurmdSpoolDir=/tmp/slurmd
