@@ -4,7 +4,7 @@
   notify: reload slurm
 
 - hostname:
-  name: slurmserver
+    name: slurmserver
 
 # start SLURM daemon
 - name: Start SLURM service
