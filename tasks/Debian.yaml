@@ -25,12 +25,3 @@
 
 - name: '[Ubuntu] install SLURM'
   command: make install chdir=/tmp/slurm-{{ slurm_version }} creates=/usr/local/bin/srun
-
-- set_fact:
-    SLURM_CONF: "/usr/local/etc/slurm.conf"
-
-- set_fact: SLURM_SERVICE="slurmd"
-  when: ansible_distribution == "Ubuntu" and slurm_type_of_node == "wn"
-
-- set_fact: SLURM_SERVICE="slurmctld"
-  when: ansible_distribution == "Ubuntu" and slurm_type_of_node == "front"
