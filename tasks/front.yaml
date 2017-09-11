@@ -1,14 +1,25 @@
 ---
-    - name: Create the slurm.conf file
-      template: dest={{ SLURM_CONF }} src=slurm.conf.j2
-      notify: reload slurm
+- name: Create the slurm.conf file
+  template: dest={{ SLURM_CONF }} src=slurm.conf.j2
+  notify: reload slurm
 
-    - hostname:
-        name: slurmserver
+- hostname:
+    name: slurmserver
 
-    # start SLURM daemon
-    - service: name={{SLURM_SERVICE}} state=started
+# start SLURM daemon
+- name: Start SLURM service
+  become: true
+  become_user: slurm
+  command: slurmctld
     
-    - name: Ensure slurmd is not running in front node
-      shell: pgrep slurmd && killall slurmd
-      ignore_errors: yes
+- name: Ensure slurmd is not running in front node
+  shell: pgrep slurmd && killall slurmd
+  ignore_errors: yes
+
+- name: Reconfigure SLURM
+  become: true
+  become_user: slurm
+  command: scontrol reconfigure
+
+- name: allow the slurm user to acces the slurm logs
+  file: path=/tmp/slurmctld.log mode=0644

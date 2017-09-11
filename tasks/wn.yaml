@@ -1,12 +1,18 @@
 ---
-    - service: name=firewalld state=stopped
-      when: ansible_os_family == "RedHat" and ansible_distribution_major_version|int >= 7
-      ignore_errors: yes
+- service: name=firewalld state=stopped
+  when: ansible_os_family == "RedHat" and ansible_distribution_major_version|int >= 7
+  ignore_errors: yes
 
-    - name: Create the slurm.conf file
-      template: dest={{ SLURM_CONF }} src=slurm.conf.j2
-      notify: reload slurm
+- name: Create the slurm.conf file
+  template: dest={{ SLURM_CONF }} src=slurm.conf.j2
+  notify: reload slurm
 
-    # start SLURM daemon
-    - service: name={{SLURM_SERVICE}} state=started
+# start SLURM daemon
+- name: Start Slurm Daemon
+  command: slurmd
 
+- name: Reconfigure SLURM
+  command: scontrol reconfigure
+
+- name: allow the slurm user to acces the slurm logs
+  file: path=/tmp/slurmd.log mode=0644

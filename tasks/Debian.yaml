@@ -1,13 +1,27 @@
 ---
-    #SLURM dependences 
-    - name: Install Apr slurm package
-      apt: name=slurm-llnl
+#SLURM dependences 
+- name: '[Ubuntu] Set Debian facts'
+  set_fact:
+    SLURM_VERSION: "{{ slurm_version }}"
+    PKG_FOLDER: "Debian"
+  when: ansible_os_family == "Debian"
+    
+- name: '[Ubuntu]install slurm dependences in Deb systems'
+  apt: name=libmunge2,libpq5,openssl-blacklist,munge,libmunge-dev,gcc,make,bzip2 update_cache=yes cache_valid_time=3600
 
-    - set_fact: SLURM_CONF="/etc/slurm-llnl/slurm.conf" SLURM_SERVICE="slurm-llnl"
+- name: '[Ubuntu] Copy required packages'
+  copy: src={{PKG_FOLDER}}/{{item}} dest=/tmp/slurm.tar.bz2
+  with_items:
+    - slurm-{{slurm_version}}.tar.bz2
 
-    - set_fact: SLURM_SERVICE="slurmd"
-      when: ansible_distribution == "Ubuntu" and ansible_distribution_major_version == "16" and slurm_type_of_node == "wn"
+- name: '[Ubuntu] decompress SLURM package'
+  command: tar xjf slurm.tar.bz2 chdir=/tmp creates=/tmp/slurm-{{ slurm_version }}
 
-    - set_fact: SLURM_SERVICE="slurmctld"
-      when: ansible_distribution == "Ubuntu" and ansible_distribution_major_version == "16" and slurm_type_of_node == "front"
+- name: '[Ubuntu] configure SLURM'
+  command: ./configure chdir=/tmp/slurm-{{ slurm_version }} creates=/tmp/slurm-{{ slurm_version }}/config.log
 
+- name: '[Ubuntu] compile (make) SLURM'
+  command: make chdir=/tmp/slurm-{{ slurm_version }} creates=/tmp/slurm-{{ slurm_version }}/src/slurmctld
+
+- name: '[Ubuntu] install SLURM'
+  command: make install chdir=/tmp/slurm-{{ slurm_version }} creates=/usr/local/bin/srun

@@ -1,18 +1,43 @@
 ---
-    # install munge
-    - name: Start Munge service
-      service: name=munge state=started
-      register: munge_installed
-      ignore_errors: yes
+# install munge
+- name: Start Munge service
+  service: name=munge state=started
+  register: munge_installed
+  ignore_errors: yes
 
-    - stat: path=/etc/munge/munge.key
-      register: munge_key
+- stat: path=/etc/munge/munge.key
+  register: munge_key
 
-    - include: munge.yaml
-      when: munge_installed|failed
+- include: munge.yaml
+  when: munge_installed|failed
 
-    - include: "{{ansible_os_family}}.yaml"
+- include: "{{ansible_os_family}}.yaml"
 
-    - include: "{{slurm_type_of_node}}.yaml"
+- name: Set SLURM conf file path as fact RH
+  set_fact:
+    SLURM_CONF: "/etc/slurm/slurm.conf"
+    SLURM_SERVICE: "slurm"
+    SLURM_DAEMON: "slurm"
+  when: ansible_os_family == "RedHat"
+
+- name: Set SLURM conf file path as fact Debian
+  set_fact:
+    SLURM_CONF: "/usr/local/etc/slurm.conf"
+    SLURM_SERVICE: "slurmctld"
+    SLURM_DAEMON: "slurmd"
+  when: ansible_os_family == "Debian"
+
+- name: create slurm user and group
+  user: name="{{slurm_user}}" shell=/bin/bash system=yes
+
+- name: create folders used by SLURM and set slurm owner
+  file: path={{item}} state=directory owner=slurm group=slurm
+  with_items:
+    - /var/spool/slurm
+    - /var/log/slurm
+    - /var/slurm/checkpoint
+    - /etc/slurm
+
+- include: "{{slurm_type_of_node}}.yaml"
 
 
