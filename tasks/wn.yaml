@@ -11,6 +11,11 @@
 - name: Start Slurm Daemon
   command: slurmd
 
+- name: Wait Slurm daemon in the front-end to be up
+  wait_for:
+    host: "{{slurm_server_ip}}"
+    port: 6817
+
 - name: Reconfigure SLURM
   command: scontrol reconfigure
 
