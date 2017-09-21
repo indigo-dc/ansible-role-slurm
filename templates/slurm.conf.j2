@@ -164,6 +164,6 @@ PartitionName=debug Nodes={{ slurm_wn_nodenames | join(",") }} Default=YES MaxTi
 NodeName={{slurm_vnode_prefix}}[1-{{slurm_wn_ips|length}}] CPUs={{ slurm_wn_cpus }} State=UNKNOWN
 PartitionName=debug Nodes={{slurm_vnode_prefix}}[1-{{slurm_wn_ips|length}}] Default=YES MaxTime=INFINITE State=UP
 {% else %}
-NodeName=localhost CPUs=1 State=UNKNOWN 
-PartitionName=debug Nodes=localhost Default=YES MaxTime=INFINITE State=UP
+NodeName={{ ansible_hostname }} CPUs=1 State=UNKNOWN 
+PartitionName=debug Nodes={{ ansible_hostname }} Default=YES MaxTime=INFINITE State=UP
 {% endif %}
