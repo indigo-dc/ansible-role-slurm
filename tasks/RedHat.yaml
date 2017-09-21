@@ -3,24 +3,17 @@
 - name: '[EL] Install epel repo'
   yum: name=epel-release
 
-- name: '[EL] update repositories cache and yum install slurm dependences in REL systems'
-  yum: name=readline-devel,openssl,openssl-devel,munge-devel,pam-devel,perl-ExtUtils-MakeMaker,gcc,make,rpm-build,perl-DBI,psmisc
-
-- name: '[EL] Install perl-Switch in CentOS 7'
-  yum: name=perl-Switch
-  when: ansible_distribution_major_version == "7"
-
 - name: '[EL] Set Centos 6 facts'
   set_fact:
     SLURM_VERSION: "{{ slurm_version }}-1.el6"
     PKG_FOLDER: "centos6/{{ slurm_version }}"
-  when: ansible_os_family == "RedHat" and ansible_distribution_major_version|int == 6
+  when: ansible_distribution_major_version|int == 6
 
 - name: '[EL] Set Centos 7 facts'
   set_fact:
     SLURM_VERSION: "{{ slurm_version }}-1.el7.centos"
     PKG_FOLDER: "centos7/{{ slurm_version }}"
-  when: ansible_os_family == "RedHat" and ansible_distribution_major_version|int == 7
+  when: ansible_distribution_major_version|int == 7
 
 - name: '[EL] Copy required packages'
   copy: src={{PKG_FOLDER}}/{{item}} dest=/tmp/{{item}}
