@@ -10,6 +10,17 @@
         uid: "{{munge_uid}}"
         system: yes 
         comment: "Runs Uid 'N' Gid Emporium"
+        home: '/var/run/munge'
+        shell: '/sbin/nologin'
+      when: ansible_os_family == "RedHat"
+
+    - name: create munge user and group
+      user:
+        name: "{{munge_user}}"
+        uid: "{{munge_uid}}"
+        system: yes
+        shell: '/bin/false'
+      when: ansible_os_family == "Debian"
 
     - name: Yum install munge
       yum: name=munge
