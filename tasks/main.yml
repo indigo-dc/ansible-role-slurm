@@ -28,7 +28,7 @@
   when: ansible_os_family == "Debian"
 
 - name: create slurm user and group
-  user: name="{{slurm_user}}" shell=/bin/bash system=yes
+  user: name="{{slurm_user}}" uid="{{slurm_uid}}" shell=/bin/bash system=yes
 
 - name: create folders used by SLURM and set slurm owner
   file: path={{item}} state=directory owner=slurm group=slurm
