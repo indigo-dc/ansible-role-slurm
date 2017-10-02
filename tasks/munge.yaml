@@ -10,8 +10,6 @@
         uid: "{{munge_uid}}"
         system: yes 
         comment: "Runs Uid 'N' Gid Emporium"
-        home: '/var/run/munge'
-        shell: '/sbin/nologin'
 
     - name: Yum install munge
       yum: name=munge
