@@ -38,18 +38,20 @@
       apt: name=munge update_cache=yes cache_valid_time=3600
       when: ansible_os_family == "Debian"
       ignore_errors: yes
-      register: munge_install_result
+      register: munge_adduser_result
 
     - name: "[Ubuntu] Edit munge postinst script to avoid adduser problem"
       lineinfile:
         dest: '/var/lib/dpkg/info/munge.postinst'
         regexp: '      adduser --quiet --system --group --no-create-home munge'
         line: '      adduser --quiet --system --group --no-create-home munge || true'
-      when: munge_install_result|failed and ansible_os_family == "Debian"
+      when: munge_adduser_result|failed
 
     - name: '[Ubuntu] Fix munge installation'
       command: apt-get install -f
-      when: munge_install_result|failed and ansible_os_family == "Debian"
+      when: munge_adduser_result|failed
+      ignore_errors: yes
+      register: munge_install_result
 
     - name: Set correct permissions to munge log
       file: path=/var/log/munge mode=0700
@@ -70,7 +72,7 @@
 
         - name: Remove the key
           file: path=/etc/munge/munge.key state=absent
-      when: munge_install_result|failed and ansible_os_family == "Debian" and ansible_distribution_version == "16.04"
+      when: munge_install_result|failed
 
     - shell: echo -n "{{ slurm_password }}" | sha512sum | cut -d' ' -f1 >/etc/munge/munge.key
       when: not munge_key.stat.exists
