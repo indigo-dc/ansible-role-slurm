@@ -1,16 +1,58 @@
 ---
-    # install munge
-    - name: Yum install epel
+# install munge
+
+    - name: Set munge group
+      group:
+        name: "{{munge_user}}"
+        gid: "{{munge_uid}}"
+        system: yes
+        state: present
+
+    - name: '[EL] Yum install epel'
       yum: name=epel-release
       when: ansible_os_family == "RedHat"
 
-    - name: Yum install munge
+    - name: '[EL] create munge user'
+      user:
+        name: "{{munge_user}}"
+        uid: "{{munge_uid}}"
+        system: yes 
+        comment: "Runs Uid 'N' Gid Emporium"
+        home: '/var/run/munge'
+        shell: '/sbin/nologin'
+        group: '{{munge_user}}' 
+      when: ansible_os_family == "RedHat"
+
+    - name: '[EL] Yum install munge'
       yum: name=munge
       when: ansible_os_family == "RedHat"
 
-    - name: Apt install munge
+    - name: '[Ubuntu] create munge user'
+      user:
+        name: "{{munge_user}}"
+        uid: "{{munge_uid}}"
+        system: yes
+        createhome: no
+        shell: '/bin/false'
+        group: '{{munge_user}}'
+      when: ansible_os_family == "Debian"
+
+    - name: '[Ubuntu] Apt install munge'
       apt: name=munge update_cache=yes cache_valid_time=3600
       when: ansible_os_family == "Debian"
+      ignore_errors: yes
+      register: munge_adduser_result
+
+    - name: "[Ubuntu] Edit munge postinst script to avoid adduser problem"
+      lineinfile:
+        dest: '/var/lib/dpkg/info/munge.postinst'
+        regexp: '      adduser --quiet --system --group --no-create-home munge'
+        line: '      adduser --quiet --system --group --no-create-home munge || true'
+      when: munge_adduser_result|failed
+
+    - name: '[Ubuntu] Fix munge installation'
+      command: apt-get install -f
+      when: munge_adduser_result|failed
       ignore_errors: yes
       register: munge_install_result
 
@@ -39,6 +81,6 @@
       when: not munge_key.stat.exists
 
     - name: Set correct permissions to munge.key
-      file: path=/etc/munge/munge.key owner=munge group=munge mode=0400
+      file: path=/etc/munge/munge.key owner="{{munge_user}}" group="{{munge_user}}" mode=0400
 
     - service: name=munge state=restarted

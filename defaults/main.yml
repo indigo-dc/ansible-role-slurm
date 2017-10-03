@@ -17,5 +17,9 @@ slurm_wn_nodenames: []
 slurm_wn_cpus: 1
 # Default user for ssh and slurm management
 slurm_user: slurm
+slurm_uid: "1994"
 # Password used to derive a munge key for authentication between the server and the workers
 slurm_password: hfe1q4ujaucsu913
+# Default user for munge
+munge_user: munge
+munge_uid: "1995"
