@@ -1,10 +1,17 @@
 ---
-    # install munge
-    - name: Yum install epel
+# install munge
+
+    - name: Set munge group
+      group:
+        name: "{{munge_user}}"
+        gid: "{{munge_uid}}"
+        state: present
+
+    - name: '[EL] Yum install epel'
       yum: name=epel-release
       when: ansible_os_family == "RedHat"
 
-    - name: create munge user and group
+    - name: '[EL] create munge user and group'
       user:
         name: "{{munge_user}}"
         uid: "{{munge_uid}}"
@@ -14,23 +21,34 @@
         shell: '/sbin/nologin'
       when: ansible_os_family == "RedHat"
 
-    - name: create munge user and group
+    - name: '[EL] Yum install munge'
+      yum: name=munge
+      when: ansible_os_family == "RedHat"
+
+    - name: '[Ubuntu] create munge user and group'
       user:
         name: "{{munge_user}}"
         uid: "{{munge_uid}}"
         system: yes
-        shell: '/bin/false'
+        createhome: no
       when: ansible_os_family == "Debian"
 
-    - name: Yum install munge
-      yum: name=munge
-      when: ansible_os_family == "RedHat"
-
-    - name: Apt install munge
+    - name: '[Ubuntu] Apt install munge'
       apt: name=munge update_cache=yes cache_valid_time=3600
       when: ansible_os_family == "Debian"
       ignore_errors: yes
       register: munge_install_result
+
+    - name: "[Ubuntu] Edit munge postinst script to avoid adduser problem"
+      lineinfile:
+        dest: '/var/lib/dpkg/info/munge.postinst'
+        regexp: '      adduser --quiet --system --group --no-create-home munge'
+        line: '      adduser --quiet --system --group --no-create-home munge || true'
+      when: munge_install_result|failed and ansible_os_family == "Debian"
+
+    - name: '[Ubuntu] Fix munge installation'
+      command: apt-get install -f
+      when: munge_install_result|failed and ansible_os_family == "Debian"
 
     - name: Set correct permissions to munge log
       file: path=/var/log/munge mode=0700
@@ -51,12 +69,12 @@
 
         - name: Remove the key
           file: path=/etc/munge/munge.key state=absent
-      when: munge_install_result|failed
+      when: munge_install_result|failed and ansible_os_family == "Debian" and ansible_distribution_version == "16.04"
 
     - shell: echo -n "{{ slurm_password }}" | sha512sum | cut -d' ' -f1 >/etc/munge/munge.key
       when: not munge_key.stat.exists
 
     - name: Set correct permissions to munge.key
-      file: path=/etc/munge/munge.key owner=munge group=munge mode=0400
+      file: path=/etc/munge/munge.key owner="{{munge_user}}" group="{{munge_user}}" mode=0400
 
     - service: name=munge state=restarted
