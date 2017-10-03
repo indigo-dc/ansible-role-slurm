@@ -5,6 +5,7 @@
       group:
         name: "{{munge_user}}"
         gid: "{{munge_uid}}"
+        system: yes
         state: present
 
     - name: '[EL] Yum install epel'
@@ -19,6 +20,7 @@
         comment: "Runs Uid 'N' Gid Emporium"
         home: '/var/run/munge'
         shell: '/sbin/nologin'
+        group: '{{munge_user}}' 
       when: ansible_os_family == "RedHat"
 
     - name: '[EL] Yum install munge'
@@ -32,6 +34,7 @@
         system: yes
         createhome: no
         shell: '/bin/false'
+        group: '{{munge_user}}'
       when: ansible_os_family == "Debian"
 
     - name: '[Ubuntu] Apt install munge'

@@ -27,8 +27,11 @@
     SLURM_DAEMON: "slurmd"
   when: ansible_os_family == "Debian"
 
-- name: create slurm user and group
-  user: name="{{slurm_user}}" uid="{{slurm_uid}}" shell=/bin/bash system=yes
+- name: create slurm group
+  group: name="{{slurm_user}}" gid="{{slurm_uid}}" system=yes state=present
+
+- name: create slurm user
+  user: name="{{slurm_user}}" uid="{{slurm_uid}}" shell=/bin/bash system=yes group="{{slurm_user}}"
 
 - name: create folders used by SLURM and set slurm owner
   file: path={{item}} state=directory owner=slurm group=slurm
