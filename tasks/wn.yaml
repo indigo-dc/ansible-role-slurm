@@ -6,6 +6,7 @@
 - name: Create the slurm.conf file
   template: dest={{ SLURM_CONF }} src=slurm.conf.j2
   notify: reload slurm
+  when: inventory_hostname != slurm_server_name 
 
 # start SLURM daemon
 - name: Start Slurm Daemon
