@@ -9,10 +9,18 @@ slurm_server_name: slurmserver
 slurm_server_ip: 127.0.0.1
 # Prefix to set to the SLURM working nodes
 slurm_vnode_prefix: vnode-
-# List of IPs of the WNs
-slurm_wn_ips: []
+
+# These three values are used to define the WNs
+# Only define one of them. In case of defining more than one
+# they are prioritized in the same order that appears in this file
+
 # List of the name of the WNs
 slurm_wn_nodenames: []
+# List of IPs of the WNs
+slurm_wn_ips: []
+# Number of WNs
+slurm_wn_num: -1
+
 # Number of CPUs of the WNs
 slurm_wn_cpus: 1
 # Default user for ssh and slurm management
