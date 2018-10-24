@@ -41,6 +41,10 @@
     - /var/slurm/checkpoint
     - /etc/slurm
 
+- set_fact:
+    slurm_wn_cpus: '{{ ansible_processor_vcpus }}'
+  when: resource_allocation_type == 'res_cons'
+
 - include: "{{slurm_type_of_node}}.yaml"
 
 
