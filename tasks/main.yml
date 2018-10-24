@@ -43,8 +43,6 @@
 
 - set_fact:
     slurm_wn_cpus: '{{ ansible_processor_vcpus }}'
-  when: resource_allocation_type == 'res_cons'
+  when: resource_allocation_type == 'cons_res'
 
 - include: "{{slurm_type_of_node}}.yaml"
-
-
