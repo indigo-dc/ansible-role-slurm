@@ -38,4 +38,4 @@ munge_uid: "1995"
 # - linear
 # - cons_res
 resource_allocation_type: 'linear'
-resource_allocation_parameters: 'CR_CPU"
+resource_allocation_parameters: 'CR_CPU'
