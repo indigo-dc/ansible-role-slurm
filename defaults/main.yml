@@ -37,5 +37,5 @@ munge_uid: "1995"
 # possible values:
 # - linear
 # - cons_res
-resource_allocation_type: 'linear'
-resource_allocation_parameters: 'CR_CPU'
+resource_allocation_type: 'cons_res'
+resource_allocation_parameters: 'CR_CPU_Memory' # Allocate individual cores/memory instead of entire node
