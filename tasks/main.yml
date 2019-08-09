@@ -41,6 +41,9 @@
     - /var/slurm/checkpoint
     - /etc/slurm
 
+- debug:
+    msg: 'vCPUS through ansible fact: {{ ansible_processor_vcpus }}'
+
 - set_fact:
     slurm_wn_cpus: '{{ ansible_processor_vcpus }}'
   when: resource_allocation_type == 'cons_res'
