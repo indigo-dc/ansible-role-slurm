@@ -42,7 +42,7 @@
     - /etc/slurm
 
 - debug: 
-   msg: 'vCPUS through ansible fact: {{ ansible_processor_vcpus }}'
+   msg: 'vCPUS through ansible fact: {{ ansible_processor_vcpus }} with {{ slurm_wn_num }} nodes'
   when: resource_allocation_type == 'cons_res'
 
 - set_fact:
