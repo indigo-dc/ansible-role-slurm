@@ -175,6 +175,6 @@ NodeName={{slurm_vnode_prefix}}[1-{{slurm_wn_ips|length}}] CPUs={{ slurm_wn_cpus
 PartitionName=debug Nodes={{slurm_vnode_prefix}}[1-{{slurm_wn_ips|length}}] Default=YES MaxTime=INFINITE State=UP
 {% else %}
 # default case
-NodeName={{ ansible_hostname }} CPUs=1 State=UNKNOWN
+NodeName={{ ansible_hostname }} CPUs={{ slurm_wn_cpus }} State=UNKNOWN
 PartitionName=debug Nodes={{ ansible_hostname }} Default=YES MaxTime=INFINITE State=UP
 {% endif %}

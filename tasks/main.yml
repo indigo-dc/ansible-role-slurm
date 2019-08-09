@@ -41,18 +41,9 @@
     - /var/slurm/checkpoint
     - /etc/slurm
 
-- debug:
-    msg: 'vCPUS through ansible fact: {{ ansible_processor_vcpus }}'
-
-- name: Collect only facts returned by virtual
-  setup:
-    gather_subset:
-      - '!all'
-      - '!any'
-      - virtual
-
-- debug:
-    msg: 'vCPUS through ansible fact: {{ ansible_processor_vcpus }}'
+- debug: 
+   msg: 'vCPUS through ansible fact: {{ ansible_processor_vcpus }}'
+  when: resource_allocation_type == 'cons_res'
 
 - set_fact:
     slurm_wn_cpus: '{{ ansible_processor_vcpus }}'
