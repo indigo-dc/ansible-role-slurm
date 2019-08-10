@@ -174,7 +174,13 @@ PartitionName=debug Nodes={{ slurm_wn_nodenames | join(",") }} Default=YES MaxTi
 NodeName={{slurm_vnode_prefix}}[1-{{slurm_wn_ips|length}}] CPUs={{ slurm_wn_cpus }} State=UNKNOWN
 PartitionName=debug Nodes={{slurm_vnode_prefix}}[1-{{slurm_wn_ips|length}}] Default=YES MaxTime=INFINITE State=UP
 {% else %}
-# default case
+{% if resource_allocation_type == 'cons_res' %}
+# configure cons_res for worker nodes
 NodeName={{ ansible_hostname }} CPUs={{ slurm_wn_cpus }} State=UNKNOWN
 PartitionName=debug Nodes={{ ansible_hostname }} Default=YES MaxTime=INFINITE State=UP
+{% else %}
+# default case
+NodeName={{ ansible_hostname }} CPUs=1 State=UNKNOWN
+PartitionName=debug Nodes={{ ansible_hostname }} Default=YES MaxTime=INFINITE State=UP
+{% endif %}
 {% endif %}
