@@ -7,10 +7,20 @@
     name: "{{ slurm_server_name }}"
 
 # start SLURM daemon
-- name: Start SLURM service
+- name: '[Docker] Start SLURM service'
   become: true
   become_user: slurm
   command: slurmctld
+  when: ansible_virtualization_type == "docker"
+
+- name: '[VM] Start SLURM service'
+  service:
+    name: slurmctld
+    state: started
+    enabled: yes
+  become_user: root
+  become_method: sudo
+  when: ansible_virtualization_type != "docker"
     
 - name: Ensure slurmd is not running in front node
   shell: pgrep slurmd && killall slurmd
