@@ -11,16 +11,16 @@
 # start SLURM daemon
 - name: '[Docker] Start Slurm Daemon'
   command: slurmd
-  when: ansible_virtualization_type == "docker"
-
-- name: '[VM] Start Slurm service'
-  service:
-    name: slurmd
-    state: started
-    enabled: yes
-  become_user: root
-  become_method: sudo
-  when: ansible_virtualization_type != "docker"
+#  when: ansible_virtualization_type == "docker"
+#
+#- name: '[VM] Start Slurm service'
+#  service:
+#    name: slurmd
+#    state: started
+#    enabled: yes
+#  become_user: root
+#  become_method: sudo
+#  when: ansible_virtualization_type != "docker"
 
 - name: Wait Slurm daemon in the front-end to be up
   wait_for:
