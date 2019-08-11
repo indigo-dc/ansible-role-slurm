@@ -13,11 +13,6 @@
   command: slurmd
   when: ansible_virtualization_type == "docker"
 
-- name: '[VM] Ensure slurmd is not running in front node'
-  shell: pgrep slurmd && killall slurmd
-  ignore_errors: yes
-  when: ansible_virtualization_type != "docker"
-
 - name: '[VM] Start Slurm service'
   service:
     name: slurmd
