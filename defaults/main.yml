@@ -22,7 +22,7 @@ slurm_wn_ips: []
 slurm_wn_num: -1
 
 # Number of CPUs of the WNs
-slurm_wn_cpus: 1
+slurm_wn_cpus: 99
 # Default user for ssh and slurm management
 slurm_user: slurm
 slurm_uid: "1994"
