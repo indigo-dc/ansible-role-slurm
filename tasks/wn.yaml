@@ -9,16 +9,16 @@
   when: inventory_hostname != slurm_server_name 
 
 # start SLURM daemon
-- name: '[Docker] Start Slurm Daemon'
+- name: 'Start Slurm Daemon'
   command: slurmd
-  when: ansible_virtualization_type == "docker"
+  when: ansible_os_family == "Debian" or ansible_virtualization_type == "docker"
 
-- name: '[VM] Start Slurm service'
+- name: 'Start Slurm service'
   service:
     name: slurmd
     state: started
     enabled: yes
-  when: ansible_virtualization_type != "docker"
+  when: ansible_os_family == "RedHat" and ansible_virtualization_type != "docker"
 
 - name: Wait Slurm daemon in the front-end to be up
   wait_for:
