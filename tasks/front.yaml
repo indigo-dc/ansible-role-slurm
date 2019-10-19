@@ -11,16 +11,6 @@
   become: true
   become_user: slurm
   command: slurmctld
-  when: ansible_os_family == "Debian" or ansible_virtualization_type == "docker"
-
-- name: 'Start SLURM service'
-  service:
-    name: slurmctld
-    state: started
-    enabled: yes
-  become_user: root
-  become_method: sudo
-  when: ansible_os_family == "RedHat" and ansible_virtualization_type != "docker"
     
 - name: Ensure slurmd is not running in front node
   shell: pgrep slurmd && killall slurmd

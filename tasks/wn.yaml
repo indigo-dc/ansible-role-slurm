@@ -15,14 +15,6 @@
 # start SLURM daemon
 - name: 'Start Slurm Daemon'
   command: slurmd
-  when: ansible_os_family == "Debian" or ansible_virtualization_type == "docker"
-
-- name: 'Start Slurm service'
-  service:
-    name: slurmd
-    state: started
-    enabled: yes
-  when: ansible_os_family == "RedHat" and ansible_virtualization_type != "docker"
 
 - name: Wait Slurm daemon in the front-end to be up
   wait_for:
