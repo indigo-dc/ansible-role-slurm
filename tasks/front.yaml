@@ -1,4 +1,7 @@
 ---
+- debug:
+    msg: "{{ slurm_wn_cpus }}"
+
 - name: Create the slurm.conf file
   template: dest={{ SLURM_CONF }} src=slurm.conf.j2
   notify: reload slurm
