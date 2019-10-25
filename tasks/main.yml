@@ -19,8 +19,8 @@
 - name: Set SLURM conf file path as fact RH
   set_fact:
     SLURM_CONF: "/etc/slurm/slurm.conf"
-    SLURM_SERVICE: "slurm"
-    SLURM_DAEMON: "slurm"
+    SLURM_SERVICE: "slurmctld"
+    SLURM_DAEMON: "slurmd"
   when: ansible_os_family == "RedHat"
 
 - name: Set SLURM conf file path as fact Debian

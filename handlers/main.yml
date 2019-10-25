@@ -3,4 +3,4 @@
   when: not munge_key.stat.exists
 
 - name: reload slurm
-  shell: scontrol reconfigure || service {{SLURM_SERVICE}} restart
+  shell: scontrol reconfigure || systemctl {{SLURM_SERVICE}} restart
