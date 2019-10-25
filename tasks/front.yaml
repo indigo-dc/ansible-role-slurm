@@ -7,7 +7,7 @@
     name: "{{ slurm_server_name }}"
 
 - name: Restart SLURM service
-    service:
+  service:
     name: slurmctld
     state: restarted
     enabled: yes
