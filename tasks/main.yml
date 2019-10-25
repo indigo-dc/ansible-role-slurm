@@ -14,8 +14,6 @@
 - include: munge.yaml
   when: munge_installed|failed
 
-- include: "{{ansible_os_family}}.yaml"
-
 - name: Set SLURM conf file path as fact RH
   set_fact:
     SLURM_CONF: "/etc/slurm/slurm.conf"
@@ -29,6 +27,8 @@
     SLURM_SERVICE: "slurmctld"
     SLURM_DAEMON: "slurmd"
   when: ansible_os_family == "Debian"
+
+- include: "{{ansible_os_family}}.yaml"
 
 - name: create slurm group
   group: name="{{slurm_user}}" gid="{{slurm_uid}}" system=yes state=present
