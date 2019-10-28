@@ -36,4 +36,4 @@
   copy:
     src: "{{PKG_FOLDER}}/{{ SLURM_DAEMON }}.service"
     dest: "/etc/systemd/system/{{ SLURM_DAEMON }}.service"
-  when: slurm_type_of_node == "front"
+  when: slurm_type_of_node == "wn"
