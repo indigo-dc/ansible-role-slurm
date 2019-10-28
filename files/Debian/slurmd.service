@@ -6,7 +6,7 @@ ConditionPathExists=/usr/local/etc/slurm.conf
 [Service]
 Type=forking
 EnvironmentFile=-/etc/sysconfig/slurmd
-ExecStart=/usr/local/sbin/slurmd -d /usr/sbin/slurmstepd $SLURMD_OPTIONS
+ExecStart=/usr/local/sbin/slurmd -d /usr/local/sbin/slurmstepd $SLURMD_OPTIONS
 ExecReload=/bin/kill -HUP $MAINPID
 PIDFile=/var/run/slurmd.pid
 KillMode=process
