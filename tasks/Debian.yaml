@@ -25,3 +25,15 @@
 
 - name: '[Ubuntu] install SLURM'
   command: make install chdir=/tmp/slurm-{{ slurm_version }} creates=/usr/local/bin/srun
+
+- name: Copy unit file
+  copy: 
+    src: "{{PKG_FOLDER}}/{{ SLURM_SERVICE }}.service"
+    dest: "/etc/systemd/system/{{ SLURM_SERVICE }}.service"
+  when: slurm_type_of_node == "front"
+
+- name: Copy unit file
+  copy:
+    src: "{{PKG_FOLDER}}/{{ SLURM_DAEMON }}.service"
+    dest: "/etc/systemd/system/{{ SLURM_DAEMON }}.service"
+  when: slurm_type_of_node == "wn"

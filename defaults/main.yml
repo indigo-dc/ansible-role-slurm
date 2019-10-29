@@ -31,3 +31,11 @@ slurm_password: hfe1q4ujaucsu913
 # Default user for munge
 munge_user: munge
 munge_uid: "1995"
+
+# SLURM resource allocation algorithm
+# https://slurm.schedmd.com/cons_res.html
+# possible values:
+# - linear
+# - cons_res
+resource_allocation_type: 'cons_res'
+resource_allocation_parameters: 'CR_CPU_Memory' # Allocate individual cores/memory instead of entire node

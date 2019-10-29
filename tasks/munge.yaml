@@ -83,4 +83,8 @@
     - name: Set correct permissions to munge.key
       file: path=/etc/munge/munge.key owner="{{munge_user}}" group="{{munge_user}}" mode=0400
 
-    - service: name=munge state=restarted
+    - service:
+        name: munge
+        state: restarted
+        enabled: yes
+
