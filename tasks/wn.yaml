@@ -15,7 +15,7 @@
 - name: Start Slurm Daemon
   service:
     name: slurmd
-    state: restarted
+    state: started
     enabled: yes
 
 - name: Wait Slurm daemon in the front-end to be up
