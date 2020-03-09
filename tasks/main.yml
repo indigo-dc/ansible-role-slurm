@@ -9,7 +9,7 @@
   register: munge_key
 
 - include: munge.yaml
-  when: munge_installed|failed
+  when: munge_installed is failed
 
 - include: "{{ansible_os_family}}.yaml"
 

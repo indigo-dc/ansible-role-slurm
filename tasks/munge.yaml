@@ -48,11 +48,11 @@
         dest: '/var/lib/dpkg/info/munge.postinst'
         regexp: '      adduser --quiet --system --group --no-create-home munge'
         line: '      adduser --quiet --system --group --no-create-home munge || true'
-      when: munge_adduser_result|failed
+      when: munge_adduser_result is failed
 
     - name: '[Ubuntu] Fix munge installation'
       command: apt-get install -f
-      when: munge_adduser_result|failed
+      when: munge_adduser_result is failed
       ignore_errors: yes
       register: munge_install_result
 
@@ -75,7 +75,7 @@
 
         - name: Remove the key
           file: path=/etc/munge/munge.key state=absent
-      when: munge_install_result|failed
+      when: munge_install_result is failed
 
     - shell: echo -n "{{ slurm_password }}" | sha512sum | cut -d' ' -f1 >/etc/munge/munge.key
       when: not munge_key.stat.exists
