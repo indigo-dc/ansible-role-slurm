@@ -6,10 +6,8 @@
   apt: name=openssl-blacklist
   when: ansible_distribution_major_version|int <= 16
 
-- name: '[Ubuntu] Copy required packages'
-  copy: src={{PKG_FOLDER}}/{{item}} dest=/tmp/slurm.tar.bz2
-  with_items:
-    - slurm-{{slurm_version}}.tar.bz2
+- name: '[Ubuntu] Copy required package'
+  copy: src=Debian/slurm-{{slurm_version}}.tar.bz2 dest=/tmp/slurm.tar.bz2
 
 - name: '[Ubuntu] decompress SLURM package'
   command: tar xjf slurm.tar.bz2 chdir=/tmp creates=/tmp/slurm-{{ slurm_version }}
