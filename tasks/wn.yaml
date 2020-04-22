@@ -8,9 +8,18 @@
   notify: reload slurm
   when: inventory_hostname != slurm_server_name 
 
-# start SLURM daemon
-- name: Start Slurm Daemon
-  command: slurmd
+  # start SLURM daemon
+- name: Create slurmd systemd unit file
+  template:
+    src: "slurmd.service.j2"
+    dest: "/etc/systemd/system/slurmd.service"
+
+- name: SystemD daemon-reload and enable/start slurmd service
+  systemd:
+    state: started
+    enabled: yes
+    name: slurmd.service
+    daemon_reload: yes
 
 - name: Wait Slurm daemon in the front-end to be up
   wait_for:
@@ -21,4 +30,4 @@
   command: scontrol reconfigure
 
 - name: allow the slurm user to acces the slurm logs
-  file: path=/tmp/slurmd.log mode=0644
+  file: path=/var/log/slurm/slurmd.log mode=0644
