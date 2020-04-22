@@ -29,4 +29,4 @@
   command: scontrol reconfigure
 
 - name: allow the slurm user to acces the slurm logs
-  file: path=/var/log/slurm/slurmctld.log mode=0644
+  file: path=/var/log/slurm/slurmctld.log mode=0644 state=touch
