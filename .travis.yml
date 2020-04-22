@@ -15,16 +15,16 @@ env:
     exec_opts: "--tty"
     dbus_up: "true"
     dbus: "true"
-  - distro: ubuntu1404
-    init: /sbin/init
-    run_opts: "--privileged"
-    exec_opts: ""
-    dbus_up: "true"
-    dbus: "true"
+#  - distro: ubuntu1404
+#    init: /sbin/init
+#    run_opts: "--privileged"
+#    exec_opts: ""
+#    dbus_up: "true"
+#    dbus: "true"
   - distro: ubuntu1604
     init: /lib/systemd/systemd
     run_opts: "--privileged --volume=/sys/fs/cgroup:/sys/fs/cgroup:ro"
-    exec_opts: ""
+    exec_opts: "--tty"
     dbus_up: "'apt update'"
     dbus: "'apt install -y dbus'"
 
