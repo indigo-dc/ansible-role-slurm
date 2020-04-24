@@ -3,18 +3,18 @@
 - name: '[EL] Install epel repo'
   yum: name=epel-release,yum-priorities
 
-- name: Add SLURM Repo key
+- name: '[EL] Add SLURM Repo key'
   rpm_key: state=present key="{{ centos_repo_key }}"
 
-- name: Add SLURM Repo
+- name: '[EL] Add SLURM Repo'
   get_url: url="{{ centos_6_repo_file }}" dest=/etc/yum.repos.d/slurm.repo
   when: ansible_distribution_major_version == "6"
 
-- name: Add SLURM Repo
+- name: '[EL] Add SLURM Repo'
   get_url: url="{{ centos_7_repo_file }}" dest=/etc/yum.repos.d/slurm.repo
   when: ansible_distribution_major_version == "7"
 
-- name: Install rpm slurm packages (common)
+- name: '[EL] Install rpm slurm packages (common)'
   yum:
     name:
       - "slurm-{{slurm_version}}"
