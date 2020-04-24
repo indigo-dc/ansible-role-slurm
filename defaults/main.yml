@@ -9,7 +9,10 @@ slurm_server_name: slurmserver
 slurm_server_ip: 127.0.0.1
 # Prefix to set to the SLURM working nodes
 slurm_vnode_prefix: vnode-
-
+debian_repo: http://ftpgrycap.i3m.upv.es/src
+centos_repo_key: http://ftpgrycap.i3m.upv.es/centos/keyFile
+centos_6_repo_file: http://ftpgrycap.i3m.upv.es/centos/6/grycap.repo
+centos_7_repo_file: http://ftpgrycap.i3m.upv.es/centos/7/grycap.repo
 # These three values are used to define the WNs
 # Only define one of them. In case of defining more than one
 # they are prioritized in the same order that appears in this file
